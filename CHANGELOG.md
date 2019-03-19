@@ -1,9 +1,9 @@
 # Change Log
 
-All notable changes to the "user-secrets" extension will be documented in this file.
+## 1.0.1 (March 19, 2019)
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Updated README with badges
 
-## [Unreleased]
+## 1.0.0 (March 19, 2019)
 
 - Initial release
