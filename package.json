@@ -1,8 +1,9 @@
 {
-  "name": "user-secrets",
-  "displayName": "User Secrets",
+  "name": "manage-user-secrets",
+  "displayName": "Manage User Secrets",
   "description": "View and manage User Secrets in ASP .NET and .NET Core Apps",
-  "version": "0.0.1",
+  "license": "MIT",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.32.0"
   },
