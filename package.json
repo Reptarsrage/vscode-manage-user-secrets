@@ -45,14 +45,14 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^10.12.21",
-    "@types/sinon": "^7.0.10",
-    "prettier": "^1.16.4",
-    "sinon": "^7.2.7",
-    "tslint": "^5.12.1",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.1",
-    "vscode": "^1.1.28"
+    "@types/mocha": "2.2.48",
+    "@types/node": "10.14.1",
+    "@types/sinon": "7.0.10",
+    "prettier": "1.16.4",
+    "sinon": "7.2.7",
+    "tslint": "5.14.0",
+    "tslint-config-prettier": "1.18.0",
+    "typescript": "3.3.3333",
+    "vscode": "1.1.30"
   }
 }
