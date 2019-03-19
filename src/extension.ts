@@ -1,22 +1,11 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import * as os from "os";
-import * as fs from "fs";
-import * as path from "path";
-
-function GetUserSecretsId(fileContents: string): string | null {
-  const regex = new RegExp(
-    /(\<UserSecretsId\>)([\w\-]+)(\<\/UserSecretsId\>)/i
-  );
-  const groups = fileContents.match(regex);
-
-  if (groups && groups.length === 4) {
-    return groups[2];
-  }
-
-  return null;
-}
+import {
+  getUserSecretsId,
+  getUserSecretsLocation,
+  ensureUserSecretsPathAndFileExist
+} from "./userSecrets";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -34,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
       // First parse the User Secrets Id from the csproj file
       const csprojFile = await vscode.workspace.openTextDocument(uri);
       const csprojContent = csprojFile.getText();
-      const userSecretId = GetUserSecretsId(csprojContent);
+      const userSecretId = getUserSecretsId(csprojContent);
       if (userSecretId === null) {
         vscode.window.showWarningMessage(
           "Unable to find UserSecretId in csproj. [See here for more info](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets#enable-secret-storage)"
@@ -43,34 +32,20 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       // Next determine where the user secrets file is
-      let secretsPath;
-      const osType = os.type();
-      if (osType === "Windows_NT") {
-        secretsPath = `${os.homedir()}\\AppData\\Roaming\\Microsoft\\UserSecrets\\${userSecretId}\\secrets.json`;
-      } else if (osType === "Linux") {
-        secretsPath = `${os.homedir()}/.microsoft/usersecrets/${userSecretId}/secrets.json`;
-      } else if (osType === "Darwin") {
-        secretsPath = `${os.homedir()}/.microsoft/usersecrets/${userSecretId}/secrets.json`;
-      } else {
-        vscode.window.showWarningMessage(
-          `Unknown Operating System. ${osType} not supported.`
+      const secretsPath = getUserSecretsLocation(userSecretId);
+      if (secretsPath === null) {
+        vscode.window.showErrorMessage(
+          `Unable to locate User Secrets file location.`
         );
         return;
       }
 
-      // Check if path exists, if not, add it
-      if (!fs.existsSync(path.dirname(secretsPath))) {
-        fs.mkdirSync(path.dirname(secretsPath), { recursive: true });
-      }
-
-      // Check if file already exists, if not, intialize it
-      if (!fs.existsSync(secretsPath)) {
-        fs.writeFileSync(secretsPath, "{\n}");
-      }
+      // Ensure location and file exist
+      ensureUserSecretsPathAndFileExist(secretsPath);
 
       // Open the user secrets file
       let doc = await vscode.workspace.openTextDocument(secretsPath);
-      await vscode.window.showTextDocument(doc);
+      let _ = await vscode.window.showTextDocument(doc);
     }
   );
 
