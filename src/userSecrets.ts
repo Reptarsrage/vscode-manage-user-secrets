@@ -1,11 +1,9 @@
-import * as os from "os";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 
 export function getUserSecretsId(fileContents: string): string | null {
-  const regex = new RegExp(
-    /(\<UserSecretsId\>)([\w\-]+)(\<\/UserSecretsId\>)/i
-  );
+  const regex = new RegExp(/(\<UserSecretsId\>)([\w\-]+)(\<\/UserSecretsId\>)/i);
   const groups = fileContents.match(regex);
 
   if (groups && groups.length === 4) {
@@ -18,11 +16,11 @@ export function getUserSecretsId(fileContents: string): string | null {
 export function getUserSecretsLocation(userSecretId: string): string | null {
   const osType = os.type();
 
-  if (osType === "Windows_NT") {
+  if (osType === 'Windows_NT') {
     return `${os.homedir()}\\AppData\\Roaming\\Microsoft\\UserSecrets\\${userSecretId}\\secrets.json`;
-  } else if (osType === "Linux") {
+  } else if (osType === 'Linux') {
     return `${os.homedir()}/.microsoft/usersecrets/${userSecretId}/secrets.json`;
-  } else if (osType === "Darwin") {
+  } else if (osType === 'Darwin') {
     return `${os.homedir()}/.microsoft/usersecrets/${userSecretId}/secrets.json`;
   }
 
@@ -37,6 +35,6 @@ export function ensureUserSecretsPathAndFileExist(secretsPath: string) {
 
   // Check if file already exists, if not, intialize it
   if (!fs.existsSync(secretsPath)) {
-    fs.writeFileSync(secretsPath, "{\n}");
+    fs.writeFileSync(secretsPath, '{\n}');
   }
 }
