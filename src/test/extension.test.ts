@@ -15,6 +15,7 @@ describe('Extension Tests', () => {
       : `${os.homedir()}/fake/path/project.csproj`;
   const expectedSecretsPath =
     os.type() === 'Windows_NT' ? `${os.homedir()}\\Fake\\Path\\secrets.json` : `${os.homedir()}/fake/path/secrets.json`;
+  const projectUri = vscode.Uri.parse(expectedProjectPath);
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -55,7 +56,7 @@ describe('Extension Tests', () => {
       stubTextDocument.getText = sandbox.stub().returns(expectedCsprojContent);
       mockVscodeWorkspace
         .expects('openTextDocument')
-        .withArgs(expectedProjectPath)
+        .withArgs(projectUri.fsPath)
         .once()
         .resolves(stubTextDocument);
 
@@ -89,7 +90,7 @@ describe('Extension Tests', () => {
         .once();
 
       // act
-      await vscode.commands.executeCommand('extension.manageUserSecrets', vscode.Uri.parse(expectedProjectPath));
+      await vscode.commands.executeCommand('extension.manageUserSecrets', projectUri);
 
       // assert
       userSecretsMock.verify();
@@ -108,7 +109,7 @@ describe('Extension Tests', () => {
       stubTextDocument.getText = sandbox.stub().returns(expectedCsprojContent);
       mockVscodeWorkspace
         .expects('openTextDocument')
-        .withArgs(expectedProjectPath)
+        .withArgs(projectUri.fsPath)
         .once()
         .resolves(stubTextDocument);
 
@@ -126,7 +127,7 @@ describe('Extension Tests', () => {
         .returns(null);
 
       // act
-      await vscode.commands.executeCommand('extension.manageUserSecrets', vscode.Uri.parse(expectedProjectPath));
+      await vscode.commands.executeCommand('extension.manageUserSecrets', projectUri);
 
       // assert
       userSecretsMock.verify();
@@ -146,7 +147,7 @@ describe('Extension Tests', () => {
       stubTextDocument.getText = sandbox.stub().returns(expectedCsprojContent);
       mockVscodeWorkspace
         .expects('openTextDocument')
-        .withArgs(expectedProjectPath)
+        .withArgs(projectUri.fsPath)
         .once()
         .resolves(stubTextDocument);
 
@@ -168,7 +169,7 @@ describe('Extension Tests', () => {
         .returns(null);
 
       // act
-      await vscode.commands.executeCommand('extension.manageUserSecrets', vscode.Uri.parse(expectedProjectPath));
+      await vscode.commands.executeCommand('extension.manageUserSecrets', projectUri);
 
       // assert
       userSecretsMock.verify();
