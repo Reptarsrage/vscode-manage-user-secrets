@@ -6,8 +6,7 @@ View and manage User Secrets in ASP .NET and .NET Core Apps.
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/Reptarsrage.vscode-manage-user-secrets.svg)](https://marketplace.visualstudio.com/items?itemName=Reptarsrage.vscode-manage-user-secrets)
 [![Ratings](https://vsmarketplacebadge.apphb.com/rating/Reptarsrage.vscode-manage-user-secrets.svg)](https://marketplace.visualstudio.com/items?itemName=Reptarsrage.vscode-manage-user-secrets)
 
-[![master](https://dev.azure.com/justinprobb/justinprobb/_apis/build/status/Reptarsrage.vscode-manage-user-secrets?branchName=master)](https://dev.azure.com/justinprobb/justinprobb/_build/latest?definitionId=1&branchName=master)
-[![develop](https://dev.azure.com/justinprobb/justinprobb/_apis/build/status/Reptarsrage.vscode-manage-user-secrets?branchName=develop)](https://dev.azure.com/justinprobb/justinprobb/_build/latest?definitionId=1&branchName=develop)
+[![master](https://dev.azure.com/justinprobb/noop/_apis/build/status/Reptarsrage.vscode-manage-user-secrets?branchName=master)](https://dev.azure.com/justinprobb/noop/_build/latest?definitionId=1&branchName=master)
 
 ![Renovate](https://badges.renovateapi.com/github/Reptarsrage/vscode-manage-user-secrets)
 
