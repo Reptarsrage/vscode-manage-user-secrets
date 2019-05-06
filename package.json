@@ -7,7 +7,7 @@
     "url": "https://github.com/Reptarsrage/vscode-manage-user-secrets.git"
   },
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "vscode": "^1.32.0"
   },
