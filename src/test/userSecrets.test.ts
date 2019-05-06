@@ -128,6 +128,7 @@ describe('User Secrets Tests', () => {
       const expectedDir = '/home/a/path';
       const expectedPath = `${expectedDir}/file.json`;
       const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
@@ -147,9 +148,32 @@ describe('User Secrets Tests', () => {
         .once();
 
       // act
-      ensureUserSecretsPathAndFileExist(expectedPath);
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
 
       // assert
+      fsMock.verify();
+      assert.equal(false, onErrorStub.called);
+    });
+
+    it('catches error when fails and calls callback', () => {
+      // arrange
+      const expectedDir = '/home/a/path';
+      const expectedPath = `${expectedDir}/file.json`;
+      const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
+      sandbox.stub(path, 'dirname').returns(expectedDir);
+
+      fsMock
+        .expects('ensureDirSync')
+        .withArgs(expectedDir)
+        .once()
+        .throws();
+
+      // act
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
+
+      // assert
+      assert.equal(true, onErrorStub.called);
       fsMock.verify();
     });
 
@@ -158,6 +182,7 @@ describe('User Secrets Tests', () => {
       const expectedDir = '/home/a/path';
       const expectedPath = `${expectedDir}/file.json`;
       const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
@@ -177,10 +202,11 @@ describe('User Secrets Tests', () => {
         .once();
 
       // act
-      ensureUserSecretsPathAndFileExist(expectedPath);
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
 
       // assert
       fsMock.verify();
+      assert.equal(false, onErrorStub.called);
     });
 
     it('skips directory file if both exist', () => {
@@ -188,6 +214,7 @@ describe('User Secrets Tests', () => {
       const expectedDir = '/home/a/path';
       const expectedPath = `${expectedDir}/file.json`;
       const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
@@ -205,10 +232,11 @@ describe('User Secrets Tests', () => {
       fsMock.expects('writeJSONSync').never();
 
       // act
-      ensureUserSecretsPathAndFileExist(expectedPath);
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
 
       // assert
       fsMock.verify();
+      assert.equal(false, onErrorStub.called);
     });
   });
 });

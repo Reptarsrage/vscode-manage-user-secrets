@@ -27,13 +27,17 @@ export function getUserSecretsLocation(userSecretId: string): string | null {
   return null;
 }
 
-export function ensureUserSecretsPathAndFileExist(secretsPath: string) {
-  // Check if path exists, if not, add it
-  const dirName = path.dirname(secretsPath);
-  fs.ensureDirSync(dirName);
+export function ensureUserSecretsPathAndFileExist(secretsPath: string, onError: (err: Error) => void) {
+  try {
+    // Check if path exists, if not, add it
+    const dirName = path.dirname(secretsPath);
+    fs.ensureDirSync(dirName);
 
-  // Check if file already exists, if not, intialize it
-  if (!fs.pathExistsSync(secretsPath)) {
-    fs.writeJSONSync(secretsPath, {});
+    // Check if file already exists, if not, intialize it
+    if (!fs.pathExistsSync(secretsPath)) {
+      fs.writeJSONSync(secretsPath, {});
+    }
+  } catch (err) {
+    onError(err);
   }
 }
