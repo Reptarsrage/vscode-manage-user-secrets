@@ -22,7 +22,10 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     // Ensure location and file exist
-    ensureUserSecretsPathAndFileExist(secretsPath);
+    ensureUserSecretsPathAndFileExist(secretsPath, err => {
+      vscode.window.showErrorMessage(`Unable to create User Secrets directory.\n${secretsPath}\n${err.message}`);
+      return;
+    });
 
     // Open the user secrets file
     const doc = await vscode.workspace.openTextDocument(secretsPath);

@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as os from 'os';
 import * as path from 'path';
 import * as sinon from 'sinon';
@@ -128,34 +128,52 @@ describe('User Secrets Tests', () => {
       const expectedDir = '/home/a/path';
       const expectedPath = `${expectedDir}/file.json`;
       const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
-        .expects('existsSync')
+        .expects('ensureDirSync')
         .withArgs(expectedDir)
-        .once()
-        .returns(false);
+        .once();
 
       fsMock
-        .expects('existsSync')
+        .expects('pathExistsSync')
         .withArgs(expectedPath)
         .once()
         .returns(false);
 
       fsMock
-        .expects('mkdirSync')
-        .withArgs(expectedDir, { recursive: true })
-        .once();
-
-      fsMock
-        .expects('writeFileSync')
-        .withArgs(expectedPath, '{\n}')
+        .expects('writeJSONSync')
+        .withArgs(expectedPath, {})
         .once();
 
       // act
-      ensureUserSecretsPathAndFileExist(expectedPath);
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
 
       // assert
+      fsMock.verify();
+      assert.equal(false, onErrorStub.called);
+    });
+
+    it('catches error when fails and calls callback', () => {
+      // arrange
+      const expectedDir = '/home/a/path';
+      const expectedPath = `${expectedDir}/file.json`;
+      const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
+      sandbox.stub(path, 'dirname').returns(expectedDir);
+
+      fsMock
+        .expects('ensureDirSync')
+        .withArgs(expectedDir)
+        .once()
+        .throws();
+
+      // act
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
+
+      // assert
+      assert.equal(true, onErrorStub.called);
       fsMock.verify();
     });
 
@@ -164,31 +182,31 @@ describe('User Secrets Tests', () => {
       const expectedDir = '/home/a/path';
       const expectedPath = `${expectedDir}/file.json`;
       const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
-        .expects('existsSync')
+        .expects('ensureDirSync')
         .withArgs(expectedDir)
-        .once()
-        .returns(true);
+        .once();
 
       fsMock
-        .expects('existsSync')
+        .expects('pathExistsSync')
         .withArgs(expectedPath)
         .once()
         .returns(false);
 
-      fsMock.expects('mkdirSync').never();
       fsMock
-        .expects('writeFileSync')
-        .withArgs(expectedPath, '{\n}')
+        .expects('writeJSONSync')
+        .withArgs(expectedPath, {})
         .once();
 
       // act
-      ensureUserSecretsPathAndFileExist(expectedPath);
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
 
       // assert
       fsMock.verify();
+      assert.equal(false, onErrorStub.called);
     });
 
     it('skips directory file if both exist', () => {
@@ -196,28 +214,29 @@ describe('User Secrets Tests', () => {
       const expectedDir = '/home/a/path';
       const expectedPath = `${expectedDir}/file.json`;
       const fsMock = sandbox.mock(fs);
+      const onErrorStub = sandbox.stub();
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
-        .expects('existsSync')
+        .expects('ensureDirSync')
         .withArgs(expectedDir)
         .once()
         .returns(true);
 
       fsMock
-        .expects('existsSync')
+        .expects('pathExistsSync')
         .withArgs(expectedPath)
         .once()
         .returns(true);
 
-      fsMock.expects('mkdirSync').never();
-      fsMock.expects('writeFileSync').never();
+      fsMock.expects('writeJSONSync').never();
 
       // act
-      ensureUserSecretsPathAndFileExist(expectedPath);
+      ensureUserSecretsPathAndFileExist(expectedPath, onErrorStub);
 
       // assert
       fsMock.verify();
+      assert.equal(false, onErrorStub.called);
     });
   });
 });
