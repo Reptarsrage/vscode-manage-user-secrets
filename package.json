@@ -54,5 +54,9 @@
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.3.3333",
     "vscode": "1.1.30"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^5.1.0",
+    "fs-extra": "^7.0.1"
   }
 }

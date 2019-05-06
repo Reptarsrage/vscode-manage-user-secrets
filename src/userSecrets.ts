@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as os from 'os';
 import * as path from 'path';
 
@@ -29,12 +29,11 @@ export function getUserSecretsLocation(userSecretId: string): string | null {
 
 export function ensureUserSecretsPathAndFileExist(secretsPath: string) {
   // Check if path exists, if not, add it
-  if (!fs.existsSync(path.dirname(secretsPath))) {
-    fs.mkdirSync(path.dirname(secretsPath), { recursive: true });
-  }
+  const dirName = path.dirname(secretsPath);
+  fs.ensureDirSync(dirName);
 
   // Check if file already exists, if not, intialize it
-  if (!fs.existsSync(secretsPath)) {
-    fs.writeFileSync(secretsPath, '{\n}');
+  if (!fs.pathExistsSync(secretsPath)) {
+    fs.writeJSONSync(secretsPath, {});
   }
 }

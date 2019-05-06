@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as os from 'os';
 import * as path from 'path';
 import * as sinon from 'sinon';
@@ -131,25 +131,19 @@ describe('User Secrets Tests', () => {
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
-        .expects('existsSync')
+        .expects('ensureDirSync')
         .withArgs(expectedDir)
-        .once()
-        .returns(false);
+        .once();
 
       fsMock
-        .expects('existsSync')
+        .expects('pathExistsSync')
         .withArgs(expectedPath)
         .once()
         .returns(false);
 
       fsMock
-        .expects('mkdirSync')
-        .withArgs(expectedDir, { recursive: true })
-        .once();
-
-      fsMock
-        .expects('writeFileSync')
-        .withArgs(expectedPath, '{\n}')
+        .expects('writeJSONSync')
+        .withArgs(expectedPath, {})
         .once();
 
       // act
@@ -167,21 +161,19 @@ describe('User Secrets Tests', () => {
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
-        .expects('existsSync')
+        .expects('ensureDirSync')
         .withArgs(expectedDir)
-        .once()
-        .returns(true);
+        .once();
 
       fsMock
-        .expects('existsSync')
+        .expects('pathExistsSync')
         .withArgs(expectedPath)
         .once()
         .returns(false);
 
-      fsMock.expects('mkdirSync').never();
       fsMock
-        .expects('writeFileSync')
-        .withArgs(expectedPath, '{\n}')
+        .expects('writeJSONSync')
+        .withArgs(expectedPath, {})
         .once();
 
       // act
@@ -199,19 +191,18 @@ describe('User Secrets Tests', () => {
       sandbox.stub(path, 'dirname').returns(expectedDir);
 
       fsMock
-        .expects('existsSync')
+        .expects('ensureDirSync')
         .withArgs(expectedDir)
         .once()
         .returns(true);
 
       fsMock
-        .expects('existsSync')
+        .expects('pathExistsSync')
         .withArgs(expectedPath)
         .once()
         .returns(true);
 
-      fsMock.expects('mkdirSync').never();
-      fsMock.expects('writeFileSync').never();
+      fsMock.expects('writeJSONSync').never();
 
       // act
       ensureUserSecretsPathAndFileExist(expectedPath);

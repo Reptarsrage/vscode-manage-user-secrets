@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import * as os from 'os';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 
@@ -8,6 +9,12 @@ import TestExtensionContext from './testExtensionContext';
 
 describe('Extension Tests', () => {
   let sandbox: sinon.SinonSandbox;
+  const expectedProjectPath =
+    os.type() === 'Windows_NT'
+      ? `${os.homedir()}\\Fake\\Path\\project.csproj`
+      : `${os.homedir()}/fake/path/project.csproj`;
+  const expectedSecretsPath =
+    os.type() === 'Windows_NT' ? `${os.homedir()}\\Fake\\Path\\secrets.json` : `${os.homedir()}/fake/path/secrets.json`;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -39,8 +46,6 @@ describe('Extension Tests', () => {
       // arrange
       const expectedCsprojContent = 'CSPROJ CONTENT';
       const expectedId = 'test-id';
-      const expectedProjectPath = '~\\fake\\path\\file.csproj';
-      const expectedSecretsPath = '~\\fake\\path\\file.json';
 
       const stubTextDocument: vscode.TextDocument = ({} as any) as vscode.TextDocument;
       const mockVscodeWorkspace = sandbox.mock(vscode.workspace);
@@ -95,8 +100,6 @@ describe('Extension Tests', () => {
     it('shows warning message when user secrets id is null', async () => {
       // arrange
       const expectedCsprojContent = 'CSPROJ CONTENT';
-      const expectedProjectPath = '~\\fake\\path\\file.csproj';
-
       const stubTextDocument: vscode.TextDocument = ({} as any) as vscode.TextDocument;
       const mockVscodeWorkspace = sandbox.mock(vscode.workspace);
       const mockVscodeWindow = sandbox.mock(vscode.window);
@@ -135,8 +138,6 @@ describe('Extension Tests', () => {
       // arrange
       const expectedCsprojContent = 'CSPROJ CONTENT';
       const expectedId = 'test-id';
-      const expectedProjectPath = '~\\fake\\path\\file.csproj';
-
       const stubTextDocument: vscode.TextDocument = ({} as any) as vscode.TextDocument;
       const mockVscodeWorkspace = sandbox.mock(vscode.workspace);
       const mockVscodeWindow = sandbox.mock(vscode.window);
