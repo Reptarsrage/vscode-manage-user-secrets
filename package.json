@@ -3,10 +3,15 @@
   "displayName": "Manage User Secrets",
   "description": "View and manage User Secrets in ASP .NET and .NET Core Apps",
   "publisher": "Reptarsrage",
+  "keywords": ["user secrets"],
   "icon": "images/icon.png",
+  "homepage": "https://github.com/Reptarsrage/vscode-manage-user-secrets/blob/master/README.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/Reptarsrage/vscode-manage-user-secrets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Reptarsrage/vscode-manage-user-secrets/issues"
   },
   "license": "MIT",
   "version": "1.0.3",
