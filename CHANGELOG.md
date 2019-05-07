@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.4 (May 5, 2019)
+
+- Making fs-extra a dependency (not a dev dependency)
+
 ## 1.0.3 (May 5, 2019)
 
 - Package updates
