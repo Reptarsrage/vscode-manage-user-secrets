@@ -30,6 +30,4 @@ Report issues [here](https://github.com/Reptarsrage/vscode-manage-user-secrets/i
 
 ## Release Notes
 
-### 1.0.0 (March 19, 2019)
-
-- Initial release!
+[See Change Log](CHANGELOG.md)
