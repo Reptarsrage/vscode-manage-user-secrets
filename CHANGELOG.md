@@ -1,9 +1,5 @@
 # Change Log
 
-## 1.0.3 (May 5, 2019)
-
-- Fixed missing icon
-
 ## 1.0.2 (May 5, 2019)
 
 - Fixed bug with recursive, cross-platform mkdir
