@@ -71,7 +71,7 @@
     "tslint": "5.18.0",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.5.3",
-    "vscode": "1.1.35"
+    "vscode": "1.1.36"
   },
   "dependencies": {
     "fs-extra": "^8.0.0"
