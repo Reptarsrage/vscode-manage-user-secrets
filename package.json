@@ -62,7 +62,7 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "devDependencies": {
-    "@types/fs-extra": "8.0.0",
+    "@types/fs-extra": "8.1.2",
     "@types/mocha": "5.2.7",
     "@types/node": "12.7.4",
     "@types/sinon": "7.0.13",
